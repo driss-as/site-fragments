@@ -1,0 +1,177 @@
+<style>
+.floating-contact-buttons {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+  z-index: 9999;
+  font-family: 'Inter', sans-serif;
+}
+.floating-contact-buttons a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px 8px 8px;
+  border-radius: 50px;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+  transition: transform 0.2s ease, box-shadow 0.3s ease, filter 0.3s ease;
+}
+.floating-contact-buttons a:hover {
+  transform: translateY(-2px) scale(1.03);
+  filter: brightness(1.1) saturate(1.15);
+  box-shadow:
+    0 8px 24px rgba(0,0,0,0.45),
+    0 0 0 5px var(--halo-color),
+    0 0 26px 6px var(--halo-color);
+}
+.email-btn { --halo-color: rgba(168, 85, 247, 0.45); }
+.floating-contact-buttons .btn-text {
+  display: flex;
+  flex-direction: column;
+}
+.floating-contact-buttons .hover-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-height: 0;
+  margin-top: 0;
+  opacity: 0;
+  color: rgba(255,255,255,0.9);
+  font-size: 11.5px;
+  font-weight: 500;
+  overflow: hidden;
+  transition: max-height 0.25s ease, opacity 0.2s ease, margin-top 0.25s ease;
+}
+.floating-contact-buttons .hover-info .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #baffce;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 0 rgba(186,255,206,0.6);
+  animation: pulse-dot 1.8s infinite;
+}
+@keyframes pulse-dot {
+  0% { box-shadow: 0 0 0 0 rgba(186,255,206,0.6); }
+  70% { box-shadow: 0 0 0 5px rgba(186,255,206,0); }
+  100% { box-shadow: 0 0 0 0 rgba(186,255,206,0); }
+}
+.floating-contact-buttons a:hover .hover-info {
+  max-height: 24px;
+  margin-top: 4px;
+  opacity: 1;
+}
+.floating-contact-buttons .copy-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 5px;
+  background: rgba(255,255,255,0.18);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s ease;
+}
+.floating-contact-buttons .copy-btn:hover {
+  background: rgba(255,255,255,0.32);
+}
+.floating-contact-buttons .copy-btn svg {
+  width: 11px;
+  height: 11px;
+  fill: none;
+  stroke: white;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.floating-contact-buttons .copy-btn.copied svg {
+  stroke: #4ade80;
+}
+.floating-contact-buttons .icon-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.floating-contact-buttons .icon-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.floating-contact-buttons .icon-circle svg { width: 18px; height: 18px; fill: white; }
+.floating-contact-buttons span.label {
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  line-height: 1.3;
+}
+.floating-contact-buttons span.label.two-lines {
+  white-space: normal;
+}
+.email-btn { background: linear-gradient(135deg, #A855F7, #7C3AED); }
+</style>
+
+<div class="floating-contact-buttons">
+  <a href="mailto:contact@drissas.com" class="email-btn" aria-label="Contact Email">
+    <span class="icon-circle">
+      <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    </span>
+    <span class="btn-text">
+      <span class="label">Une question ?</span>
+      <span class="hover-info">
+        <span class="hover-value">contact@drissas.com</span>
+        <button type="button" class="copy-btn" data-copy="contact@drissas.com" aria-label="Copier l'adresse email">
+          <svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg>
+        </button>
+      </span>
+    </span>
+  </a>
+</div>
+
+<script>
+(function () {
+  var checkIcon = '<path d="M20 6L9 17l-5-5"></path>';
+  document.querySelectorAll('.floating-contact-buttons .copy-btn').forEach(function (btn) {
+    var originalIcon = btn.innerHTML;
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var text = btn.getAttribute('data-copy');
+      var done = function () {
+        btn.classList.add('copied');
+        btn.innerHTML = '<svg viewBox="0 0 24 24">' + checkIcon + '</svg>';
+        setTimeout(function () {
+          btn.classList.remove('copied');
+          btn.innerHTML = originalIcon;
+        }, 1500);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(done);
+      } else {
+        var tmp = document.createElement('textarea');
+        tmp.value = text;
+        tmp.style.position = 'fixed';
+        tmp.style.opacity = '0';
+        document.body.appendChild(tmp);
+        tmp.select();
+        document.execCommand('copy');
+        document.body.removeChild(tmp);
+        done();
+      }
+    });
+  });
+})();
+</script>
