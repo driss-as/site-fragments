@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nav Driss AS</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #090712;
+    --navy-mid: #141027;
+    --navy-soft: #1d1738;
+    --violet: #8b5cf6;
+    --violet-light: #a78bfa;
+    --violet-glow: rgba(139, 92, 246, 0.28);
+    --white: #ffffff;
+    --white-70: rgba(255,255,255,0.72);
+    --border: rgba(167,139,250,0.18);
+    --page-gutter: max(1rem, calc((100vw - var(--page-max-width)) / 2));
+    --page-max-width: 1366px;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--navy);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  nav {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding-left: var(--page-gutter) !important;
+    padding-right: var(--page-gutter) !important;
+    height: 64px !important;
+    background: rgba(9,7,18,0.96) !important;
+    backdrop-filter: blur(12px) !important;
+    border-bottom: 1px solid var(--border) !important;
+    box-shadow: 0 14px 40px rgba(0,0,0,0.28), 0 0 30px var(--violet-glow) !important;
+    position: relative !important;
+    z-index: 1000 !important;
+  }
+
+  .nav-inner {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: 100% !important;
+    margin: 0 !important;
+  }
+
+  #mainNav {
+    padding-left: var(--page-gutter) !important;
+    padding-right: var(--page-gutter) !important;
+  }
+
+  #mainNav .nav-inner {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+    overflow: visible;
+    position: relative;
+  }
+
+  /* LOGO */
+  .nav-logo {
+    display: inline-flex !important;
+    align-items: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .nav-logo img {
+    height: 36px !important;
+    width: auto !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .nav-links {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0 !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .nav-links li {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .nav-links a {
+    color: var(--white-70) !important;
+    text-decoration: none !important;
+    font-size: 0.92rem !important;
+    font-weight: 500 !important;
+    padding: 0.5rem 0.7rem !important;
+    border-radius: 8px !important;
+    white-space: nowrap !important;
+    background: transparent !important;
+    display: inline-block !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .nav-links a:hover {
+    color: #ffffff !important;
+    background: rgba(139,92,246,0.16) !important;
+    box-shadow: inset 0 0 0 1px rgba(167,139,250,0.2) !important;
+    text-decoration: none !important;
+  }
+
+  .nav-links a.nav-cta {
+    margin-left: 0.45rem !important;
+    padding: 0.65rem 1rem !important;
+    color: #ffffff !important;
+    background: var(--violet) !important;
+    box-shadow: 0 8px 22px rgba(124,58,237,0.24) !important;
+  }
+
+  .nav-links a.nav-cta:hover {
+    background: var(--violet-light) !important;
+    box-shadow: 0 10px 26px rgba(124,58,237,0.34) !important;
+  }
+
+  .nav-dropdown {
+    position: relative !important;
+  }
+
+  .dropdown-menu {
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    right: 0 !important;
+    left: auto !important;
+    background: #141027 !important;
+    border: 1px solid rgba(167,139,250,0.18) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 18px 48px rgba(0,0,0,0.42), 0 0 26px rgba(139,92,246,0.18) !important;
+    min-width: 200px !important;
+    width: fit-content !important;
+    z-index: 999999 !important;
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .dropdown-menu.open {
+    display: block !important;
+  }
+
+  .dropdown-menu a {
+    display: block !important;
+    padding: 0.85rem 1.2rem !important;
+    font-size: 0.92rem !important;
+    font-weight: 500 !important;
+    color: rgba(255,255,255,0.82) !important;
+    text-decoration: none !important;
+    border-bottom: 1px solid rgba(167,139,250,0.14) !important;
+    white-space: nowrap !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .dropdown-menu a:last-child { border-bottom: none !important; }
+
+  .dropdown-menu a:hover {
+    background: rgba(139,92,246,0.18) !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+  }
+
+  .dropdown-trigger {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    background: linear-gradient(135deg, var(--violet), #6d28d9) !important;
+    border: 1px solid rgba(216,180,254,0.38) !important;
+    color: #ffffff !important;
+    font-size: 0.92rem !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 1.1rem !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    font-family: 'Inter', sans-serif !important;
+    white-space: nowrap !important;
+    user-select: none !important;
+    text-decoration: none !important;
+    box-shadow: 0 10px 24px rgba(109,40,217,0.3) !important;
+  }
+
+  .dropdown-trigger:hover {
+    background: linear-gradient(135deg, var(--violet-light), var(--violet)) !important;
+    border-color: rgba(216,180,254,0.56) !important;
+    color: #ffffff !important;
+  }
+
+  .dropdown-trigger.open {
+    background: linear-gradient(135deg, var(--violet-light), #7c3aed) !important;
+    border-color: rgba(216,180,254,0.62) !important;
+  }
+
+  .chevron {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .dropdown-trigger.open .chevron {
+    transform: rotate(180deg);
+  }
+
+  .dropdown-menu {
+    position: fixed;
+    top: 64px;
+    right: 2rem;
+    background: var(--navy-mid);
+    border: 1px solid rgba(167,139,250,0.18);
+    border-radius: 10px;
+    box-shadow: 0 18px 48px rgba(0,0,0,0.42), 0 0 26px rgba(139,92,246,0.18);
+    min-width: 200px;
+    width: fit-content;
+    z-index: 999999 !important;
+    display: none;
+  }
+
+  .dropdown-menu.open {
+    display: block;
+  }
+
+  .dropdown-menu a {
+    display: block;
+    padding: 0.85rem 1.2rem;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.82);
+    text-decoration: none;
+    transition: background 0.15s;
+    border-bottom: 1px solid rgba(167,139,250,0.14);
+    white-space: nowrap;
+  }
+
+  .dropdown-menu a {
+    padding: 0.85rem 1.2rem;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.82);
+    text-decoration: none;
+    transition: background 0.15s;
+    border-bottom: 1px solid rgba(167,139,250,0.14);
+    white-space: nowrap;
+  }
+
+  /* MOBILE */
+  .nav-mobile-toggle {
+    display: none;
+    background: none;
+    border: 1px solid rgba(167,139,250,0.18);
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 0.4rem;
+    color: var(--white);
+    background: rgba(139,92,246,0.12);
+  }
+
+  @media (max-width: 640px) {
+    nav {
+      height: 72px !important;
+      padding: 0 1rem !important;
+    }
+
+    #mainNav {
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+    }
+
+    .nav-inner {
+      width: 100% !important;
+    }
+
+    .nav-logo img {
+      height: 44px;
+    }
+
+    .nav-right {
+      display: none !important;
+      position: absolute;
+      top: 72px;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+      margin-left: 0;
+      padding: 1rem;
+      background: rgba(9,7,18,0.98);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 18px 34px rgba(0,0,0,0.36);
+    }
+
+    .nav-links {
+      display: none !important;
+      width: 100%;
+      flex-direction: column;
+      align-items: stretch !important;
+      gap: 0.25rem !important;
+    }
+
+    .nav-links a {
+      display: flex !important;
+      width: 100%;
+      padding: 0.8rem 0.9rem !important;
+    }
+
+    .nav-links a.nav-cta {
+      margin: 0.35rem 0 0 !important;
+      justify-content: center !important;
+    }
+
+    .nav-dropdown {
+      display: none !important;
+      position: static !important;
+      width: 100%;
+    }
+
+    .nav-mobile-toggle { display: block; }
+
+    nav.mobile-open .nav-right {
+      display: flex !important;
+    }
+
+    nav.mobile-open .nav-links {
+      display: flex !important;
+    }
+
+    nav.mobile-open .nav-dropdown {
+      display: block !important;
+    }
+
+    nav.mobile-open .dropdown-trigger {
+      width: 100%;
+      justify-content: space-between;
+      padding: 0.85rem 1rem !important;
+    }
+
+    nav.mobile-open .dropdown-menu {
+      position: static !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      margin-top: 0.5rem !important;
+      box-shadow: inset 0 0 0 1px rgba(167,139,250,0.08) !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <div class="nav-inner">
+    <!-- LOGO -->
+    <a href="https://drissas.com" class="nav-logo">
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/WsuNDzTOv387VuCwK6Gx/media/6808fe2a3e3c6661aee5526b.png" alt="Driss AS">
+    </a>
+
+    <!-- LIENS + DROPDOWN groupés à droite -->
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#row-zStg7CsSAN">Témoignages</a></li>
+        <li><a href="#row-wgRBNwd3xc">Mes projets</a></li>
+        <li><a class="nav-cta" href="https://formation.drissas.com/formation-gratuite">Formation gratuite</a></li>
+      </ul>
+    </div>
+
+    <!-- TOGGLE MOBILE -->
+    <button class="nav-mobile-toggle" onclick="toggleMobile()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<script>
+  function toggleMobile() {
+    const nav = document.getElementById('mainNav');
+    nav.classList.toggle('mobile-open');
+  }
+</script>
+
+</body>
+</html>
