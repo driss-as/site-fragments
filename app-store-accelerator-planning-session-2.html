@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App Store Accelerator — Session 2 — Planning</title>
+<style>
+  body, html { background: transparent; margin: 0; padding: 0; }
+  .sb { font-family: 'DM Sans', system-ui, sans-serif; max-width: 960px; margin: 0 auto; padding: 20px; background: transparent; }
+  .sb-logo { display: block; max-width: 160px; height: auto; margin: 0 auto 14px; }
+  .sb-header-row { display: flex; align-items: flex-start; justify-content: center; gap: 14px; margin-bottom: 16px; position: relative; }
+  .sb h2 { text-align: center; color: #fff; font-size: 22px; font-weight: 700; margin: 0 0 4px; letter-spacing: -.02em; }
+  .sb-sub { text-align: center; color: rgba(255,255,255,0.46); font-size: 12px; margin-bottom: 0; }
+  .sb-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  @media (max-width: 700px) { .sb-grid { grid-template-columns: 1fr; } }
+  .sb-pair { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 700px) { .sb-pair { grid-template-columns: 1fr; } }
+
+  .sb-countdown { position: absolute; top: 0; right: 0; padding: 6px 12px; border-radius: 100px; background: #0f1b2e; border: 1px solid rgba(59,130,246,0.4); text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,0.35); }
+  .sb-countdown-label { font-size: 8px; font-weight: 700; color: #3B82F6; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 2px; }
+  .sb-countdown-title { display: none; }
+  .sb-countdown-grid { display: flex; align-items: baseline; justify-content: center; gap: 4px; white-space: nowrap; }
+  .sb-countdown-box { display: flex; align-items: baseline; gap: 2px; }
+  .sb-countdown-value { font-size: 13px; font-weight: 800; color: #3B82F6; line-height: 1; }
+  .sb-countdown-unit { font-size: 9px; color: rgba(255,255,255,0.42); text-transform: uppercase; }
+  @media (max-width: 640px) { .sb-countdown { position: static; display: inline-block; margin-bottom: 10px; } .sb-header-row { flex-direction: column; align-items: center; } }
+
+  .sb-recur-note { text-align: center; font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 20px; padding: 8px 14px; background: rgba(255,255,255,0.04); border-radius: 8px; border: 1px dashed rgba(255,255,255,0.12); }
+
+  .sb-card { position: relative; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 14px; padding: 18px 16px; display: flex; flex-direction: column; gap: 10px; transition: background .2s, transform .2s, box-shadow .2s; overflow: hidden; }
+  .sb-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, rgba(251,146,60,0.6), transparent); }
+  .sb-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); box-shadow: 0 10px 26px rgba(0,0,0,0.3); }
+  .sb-card.next-live { border-color: rgba(59,130,246,0.75); background: rgba(59,130,246,0.09); box-shadow: 0 0 0 1px rgba(59,130,246,0.18), 0 18px 45px rgba(59,130,246,0.08); }
+  .sb-card.next-live::before { background: linear-gradient(90deg, transparent, rgba(59,130,246,0.75), transparent); }
+  .sb-card.next-live:hover { box-shadow: 0 0 0 1px rgba(59,130,246,0.18), 0 20px 48px rgba(59,130,246,0.14); }
+
+  .sb-top { display: flex; align-items: center; justify-content: space-between; }
+  .sb-num { font-size: 10px; font-weight: 700; color: #FB923C; letter-spacing: .08em; text-transform: uppercase; }
+  .sb-status { display: inline-block; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 100px; background: rgba(251,146,60,0.14); color: #FB923C; margin-left: 4px; }
+  .sb-icon-wrap { width: 44px; height: 44px; border-radius: 10px; background: rgba(251,146,60,0.14); border: 1px solid rgba(251,146,60,0.25); display: flex; align-items: center; justify-content: center; font-size: 22px; margin: 0 auto; box-shadow: 0 0 16px rgba(251,146,60,0.25); }
+  .sb-urgency { display: none; font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: 100px; background: #3B82F6; color: #fff; margin-left: 4px; }
+  .sb-card.next-live .sb-urgency { display: inline-block; }
+  .sb-card.next-live .sb-num { color: #3B82F6; }
+  .sb-card.next-live .sb-status { background: rgba(59,130,246,0.14); color: #3B82F6; }
+  .sb-card.next-live .sb-icon-wrap { background: rgba(59,130,246,0.14); border-color: rgba(59,130,246,0.25); box-shadow: 0 0 18px rgba(59,130,246,0.35); }
+  .sb-date-big { text-align: center; font-size: 17px; font-weight: 700; color: #fff; line-height: 1.2; }
+  .sb-date-time { text-align: center; font-size: 12px; color: rgba(255,255,255,0.38); margin-top: 2px; }
+  .sb-title { font-size: 13px; font-weight: 600; color: #fff; line-height: 1.35; text-align: center; }
+  .sb-divider { height: 1px; background: rgba(255,255,255,0.07); }
+  .sb-label { font-size: 10px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 3px; }
+  .sb-desc { font-size: 11px; color: rgba(255,255,255,0.52); line-height: 1.5; }
+  .sb-prep { font-size: 11px; color: rgba(255,255,255,0.45); line-height: 1.5; padding: 7px 10px; background: rgba(251,146,60,0.07); border-left: 2px solid rgba(251,146,60,0.45); border-radius: 0 6px 6px 0; }
+  .sb-card.next-live .sb-prep { background: rgba(59,130,246,0.07); border-left-color: rgba(59,130,246,0.45); }
+
+  .sb-btn { display: flex; align-items: center; justify-content: center; gap: 5px; background: rgba(251,146,60,0.16); color: rgba(253,186,116,0.7); font-size: 12px; font-weight: 600; padding: 9px 12px; border-radius: 8px; text-decoration: none; transition: opacity .2s, transform .2s, box-shadow .2s; margin-top: auto; pointer-events: none; cursor: default; border: 1px solid rgba(251,146,60,0.3); }
+  .sb-btn:hover { opacity: .85; }
+  .sb-card.next-live .sb-btn { background: #3B82F6; color: #FFFFFF; pointer-events: auto; cursor: pointer; border-color: rgba(59,130,246,0.55); }
+  .sb-replay { display: none; align-items: center; justify-content: center; gap: 5px; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.28); font-size: 12px; font-weight: 500; padding: 8px 12px; border-radius: 8px; text-decoration: none; pointer-events: none; cursor: default; border: 1px solid rgba(255,255,255,0.07); }
+  .sb-replay.active { display: flex; background: #3B82F6 !important; border-color: #7DA6FF !important; color: #FFFFFF !important; pointer-events: auto; cursor: pointer; font-weight: 800; box-shadow: 0 8px 22px rgba(59,130,246,0.34); opacity: 1 !important; filter: none !important; }
+  .sb-replay.active:hover { opacity: 1; transform: translateY(-1px); box-shadow: 0 10px 26px rgba(59,130,246,0.38); }
+
+  .sb-note { text-align: center; color: rgba(255,255,255,0.28); font-size: 11px; margin-top: 20px; line-height: 1.5; }
+  .sb-contact { grid-column: 1 / -1; text-align: center; padding: 24px 28px; background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.28); border-radius: 14px; }
+  .sb-contact p { font-size: 16px; font-weight: 700; color: #ffffff; margin: 0 0 8px; }
+  .sb-contact span { font-size: 14px; color: rgba(255,255,255,0.5); display: block; margin-bottom: 16px; }
+  .sb-contact a { display: inline-block; background: #3B82F6; color: #FFFFFF; font-size: 14px; font-weight: 700; padding: 12px 28px; border-radius: 10px; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="sb">
+  <div class="sb-header-row">
+    <div>
+      <h2>📅 App Store Accelerator · Session 2</h2>
+      <p class="sb-sub">Planning des lives · Un mardi sur deux · 20h00 – 21h30 · Mobile & SaaS</p>
+    </div>
+    <div class="sb-countdown" id="sb-countdown">
+      <div class="sb-countdown-label">Prochain live</div>
+      <div class="sb-countdown-title" id="sb-countdown-title">Live — [Titre] · [Jour] [date] · [heure]</div>
+      <div class="sb-countdown-grid">
+        <div class="sb-countdown-box"><span class="sb-countdown-value" id="sb-days">00</span><span class="sb-countdown-unit">j</span></div>
+        <div class="sb-countdown-box"><span class="sb-countdown-value" id="sb-hours">00</span><span class="sb-countdown-unit">h</span></div>
+        <div class="sb-countdown-box"><span class="sb-countdown-value" id="sb-minutes">00</span><span class="sb-countdown-unit">min</span></div>
+        <div class="sb-countdown-box"><span class="sb-countdown-value" id="sb-seconds">00</span><span class="sb-countdown-unit">s</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sb-grid">
+    <div class="sb-card">
+      <div class="sb-top"><span class="sb-num" data-date="2026-10-20T20:00:00">Live 1 <span class="sb-status">À venir</span><span class="sb-urgency"></span></span></div>
+      <div class="sb-icon-wrap">🏆</div>
+      <div><div class="sb-date-big">Mardi 20 octobre</div><div class="sb-date-time">20h00 – 21h30</div></div>
+      <div class="sb-title">Qu'est-ce qui fait qu'un produit vaut qu'on paie pour lui ?</div>
+      <div class="sb-divider"></div>
+      <div><div class="sb-label">Au programme</div><div class="sb-desc">Tu as déjà ton app et déjà un œil sur la concurrence — on va plus loin : une grille de lecture précise pour repérer, chez toi, ce qui sépare encore un produit correct d'un produit d'exception.</div></div>
+      <div><div class="sb-label">Pendant le live</div><div class="sb-prep">🏆 Exercice en direct : on passe 2-3 apps/SaaS concurrents (et la tienne si tu veux) dans la grille de lecture, pour isoler en live ce qui crée vraiment la perception de valeur.</div></div>
+      <a class="sb-btn" href="https://meet.google.com/cic-mose-rtd" target="_blank">🎥 Rejoindre le live</a>
+      <a class="sb-replay active" href="https://drive.google.com/file/d/1xonkB9opytb11JvUeDQ3pXmiu-u5OR8Z/view?usp=sharing" target="_blank" rel="noopener noreferrer">🎬 Voir le replay</a>
+    </div>
+
+    <div class="sb-card">
+      <div class="sb-top"><span class="sb-num" data-date="2026-11-03T20:00:00">Live 2 <span class="sb-status">À venir</span><span class="sb-urgency"></span></span></div>
+      <div class="sb-icon-wrap">💎</div>
+      <div><div class="sb-date-big">Mardi 3 novembre</div><div class="sb-date-time">20h00 – 21h30</div></div>
+      <div class="sb-title">Transformer un produit gratuit en produit premium</div>
+      <div class="sb-divider"></div>
+      <div><div class="sb-label">Au programme</div><div class="sb-desc">À partir de cas réels de produits passés de "correct" à "exceptionnel", identifie précisément ce qu'il te reste à ajouter pour franchir ce cap, toi qui as déjà une base solide.</div></div>
+      <div><div class="sb-label">Pendant le live</div><div class="sb-prep">💎 Exercice en direct : à partir d'un cas réel passé de "correct" à "exceptionnel", on liste ensemble les 3 ajouts qui ont fait basculer la perception — et où ça s'applique chez toi.</div></div>
+      <a class="sb-btn" href="https://meet.google.com/cic-mose-rtd" target="_blank">🎥 Rejoindre le live</a>
+      <a class="sb-replay" href="#" aria-disabled="true">🎬 Voir le replay</a>
+    </div>
+
+    <div class="sb-card">
+      <div class="sb-top"><span class="sb-num" data-date="2026-11-17T20:00:00">Live 3 <span class="sb-status">À venir</span><span class="sb-urgency"></span></span></div>
+      <div class="sb-icon-wrap">💳</div>
+      <div><div class="sb-date-big">Mardi 17 novembre</div><div class="sb-date-time">20h00 – 21h30</div></div>
+      <div class="sb-title">Construire un système d'abonnement qui convertit</div>
+      <div class="sb-divider"></div>
+      <div><div class="sb-label">Au programme</div><div class="sb-desc">Paywall, essai gratuit, offres : on décortique un système d'abonnement réellement utilisé en production pour affiner le tien — qu'il existe déjà mais convertisse mal, ou qu'il reste à construire.</div></div>
+      <div><div class="sb-label">Pendant le live</div><div class="sb-prep">💳 Exercice en direct : on reconstruit un système d'abonnement (paywall, essai, offres) à partir d'un cas réel, puis on l'applique en direct à ta situation.</div></div>
+      <a class="sb-btn" href="https://meet.google.com/cic-mose-rtd" target="_blank">🎥 Rejoindre le live</a>
+      <a class="sb-replay" href="#" aria-disabled="true">🎬 Voir le replay</a>
+    </div>
+
+    <div class="sb-pair">
+      <div class="sb-card">
+        <div class="sb-top"><span class="sb-num" data-date="2026-12-01T20:00:00">Live 4 <span class="sb-status">À venir</span><span class="sb-urgency"></span></span></div>
+        <div class="sb-icon-wrap">🧭</div>
+        <div><div class="sb-date-big">Mardi 1er décembre</div><div class="sb-date-time">20h00 – 21h30</div></div>
+        <div class="sb-title">Se différencier par la fonctionnalité, pas par le prix</div>
+        <div class="sb-divider"></div>
+        <div><div class="sb-label">Au programme</div><div class="sb-desc">Tu as déjà analysé la concurrence — on pousse plus loin : repérer les fonctionnalités à forte valeur ajoutée et les intégrer intelligemment, sans copier, pour sortir vraiment du lot sur un marché saturé.</div></div>
+        <div><div class="sb-label">Pendant le live</div><div class="sb-prep">🧭 Exercice en direct : on passe en revue des concurrents pour repérer en live une fonctionnalité à forte valeur ajoutée que tu peux intégrer rapidement, sans copier.</div></div>
+        <a class="sb-btn" href="https://meet.google.com/cic-mose-rtd" target="_blank">🎥 Rejoindre le live</a>
+        <a class="sb-replay" href="#" aria-disabled="true">🎬 Voir le replay</a>
+      </div>
+
+      <div class="sb-card">
+        <div class="sb-top"><span class="sb-num" data-date="2026-12-15T20:00:00">Live 5 <span class="sb-status">À venir</span><span class="sb-urgency"></span></span></div>
+        <div class="sb-icon-wrap">📣</div>
+        <div><div class="sb-date-big">Mardi 15 décembre</div><div class="sb-date-time">20h00 – 21h30</div></div>
+        <div class="sb-title">Vendre la valeur, pas juste l'app</div>
+        <div class="sb-divider"></div>
+        <div><div class="sb-label">Au programme</div><div class="sb-desc">Maintenant que ton produit a gagné en exception, il faut le faire savoir : montrer le résultat et la transformation, pas juste l'interface, pour attirer des utilisateurs prêts à payer.</div></div>
+        <div><div class="sb-label">Pendant le live</div><div class="sb-prep">📣 Exercice en direct : on construit ensemble un message/contenu qui montre la transformation de ton produit, prêt à publier dès la fin du live.</div></div>
+        <a class="sb-btn" href="https://meet.google.com/cic-mose-rtd" target="_blank">🎥 Rejoindre le live</a>
+        <a class="sb-replay" href="#" aria-disabled="true">🎬 Voir le replay</a>
+      </div>
+    </div>
+
+    <div class="sb-contact">
+      <p>❓ Un problème pour accéder au live ?</p>
+      <span>Le lien Google Meet est le même pour toutes les sessions de App Store Accelerator.</span>
+      <a href="https://meet.google.com/cic-mose-rtd" target="_blank">🎥 Ouvrir Google Meet</a>
+    </div>
+  </div>
+
+  <p class="sb-note">App Store Accelerator · Session 2 · Programme continu · Support : contact@drissas.com</p>
+</div>
+
+<script>
+(function() {
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function updateCountdown() {
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.sb-num[data-date]'));
+    var now = new Date();
+    var upcoming = cards
+      .map(function(el) { return { el: el, date: new Date(el.getAttribute('data-date')) }; })
+      .filter(function(item) { return item.date > now; })
+      .sort(function(a, b) { return a.date - b.date; });
+
+    var countdownBox = document.getElementById('sb-countdown');
+    if (!upcoming.length) { if (countdownBox) countdownBox.style.display = 'none'; return; }
+
+    var next = upcoming[0];
+    var diff = next.date - now;
+    var days = Math.floor(diff / 86400000);
+    var hours = Math.floor((diff % 86400000) / 3600000);
+    var minutes = Math.floor((diff % 3600000) / 60000);
+    var seconds = Math.floor((diff % 60000) / 1000);
+
+    document.getElementById('sb-days').textContent = pad(days);
+    document.getElementById('sb-hours').textContent = pad(hours);
+    document.getElementById('sb-minutes').textContent = pad(minutes);
+    document.getElementById('sb-seconds').textContent = pad(seconds);
+
+    var card = next.el.closest('.sb-card');
+    if (card) {
+      var titleEl = card.querySelector('.sb-title');
+      var title = titleEl ? titleEl.textContent : '';
+      document.getElementById('sb-countdown-title').textContent = next.el.textContent.replace(/\s*À venir\s*/, '') + ' · ' + title;
+      document.querySelectorAll('.sb-card.next-live').forEach(function(c) { c.classList.remove('next-live'); });
+      card.classList.add('next-live');
+
+      var urgencyText;
+      if (days === 0) { urgencyText = hours === 0 ? 'Dans ' + minutes + ' min' : 'Aujourd\'hui'; }
+      else if (days === 1) { urgencyText = 'Demain'; }
+      else { urgencyText = 'Dans ' + days + ' jours'; }
+      document.querySelectorAll('.sb-urgency').forEach(function(el) { el.textContent = ''; });
+      var urgencyEl = card.querySelector('.sb-urgency');
+      if (urgencyEl) urgencyEl.textContent = urgencyText;
+    }
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+})();
+</script>
+</body>
+</html>
