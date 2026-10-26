@@ -166,6 +166,12 @@
     var cards = Array.prototype.slice.call(document.querySelectorAll('.sb-num[data-date]'));
     var now = new Date();
     var liveDuration = 90 * 60 * 1000;
+    cards.forEach(function(el) {
+      var card = el.closest('.sb-card');
+      var liveButton = card ? card.querySelector('.sb-btn') : null;
+      var endTime = new Date(el.getAttribute('data-date')).getTime() + liveDuration;
+      if (liveButton) liveButton.style.display = now.getTime() >= endTime ? 'none' : '';
+    });
     var upcoming = cards
       .map(function(el) { return { el: el, date: new Date(el.getAttribute('data-date')) }; })
       .filter(function(item) { return item.date.getTime() + liveDuration > now.getTime(); })
